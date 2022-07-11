@@ -1,0 +1,19 @@
+---
+- name: Ensure the python3 path is set right
+  hosts: all
+  become: true
+  vars:
+    src_path: /usr/libexec/platform-python3.6
+    dest_path: /usr/bin/python3.6
+
+  tasks:
+    - name: Ensure python3.6 on CentOS 8 Stream is in place
+      file:
+        state: link
+        src: "{{ src_path }}"
+        dest: "{{ dest_path }}"
+        force: yes
+      when: 
+        - ansible_facts.distribution == 'RedHat'
+        - ansible_facts.distribution_major_version >= '8'
+
